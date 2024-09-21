@@ -2,23 +2,23 @@
  * @Author: linsdfghj 2214112680@qq.com
  * @Date: 2024-02-28 19:53:33
  * @LastEditors: linsdfghj 2214112680@qq.com
- * @LastEditTime: 2024-06-07 22:18:19
+ * @LastEditTime: 2024-06-23 12:55:09
  * @FilePath: \new_code_1d:\日常小软件\WeChat Files\新建文件夹\WeChat Files\wxid_mveuc1a21drc22\FileStorage\File\2024-02\second_code_1(1)\second_code_1\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 //axios的封装处理
 import axios from "axios";
-import {getToken} from "@/utils/token";
+import { getToken } from "@/utils/token";
 //1.根域名配置
 //2.超时时间
 //3.请求/相应拦截器
 
 const request = axios.create({
-    baseURL: 'http://127.0.0.1:4523/m1/4425505-4070744-default',    //mock本地环境
-    //baseURL: 'https://mock.apipark.cn/m1/3290659-2648811-default',    //请求根地址:Apifox
+    // baseURL: 'http://127.0.0.1:4523/m1/4425505-4070744-default',    //mock本地环境
+    baseURL: 'https://apifoxmock.com/m1/4425505-4070744-default',    //请求根地址:Apifox 云端mock
     // baseURL: 'http://localhost:8080',    //请求根地址:8080
     timeout: 2000,  //超时时间2s
-    headers: {'X-Custom-Header': 'foobar'}
+    headers: { 'X-Custom-Header': 'foobar' }
 });
 
 // 添加请求拦截器
@@ -50,4 +50,4 @@ request.interceptors.response.use(function (response) {
     return Promise.reject(error);
 });
 
-export {request}
+export { request }

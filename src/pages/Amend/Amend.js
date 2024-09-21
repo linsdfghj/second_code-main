@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import './Amend.css'
 
 const Amend = () => {
@@ -6,13 +7,38 @@ const Amend = () => {
   const [verificationCode, setVerificationCode] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+  const [phoneNumberError, setPhoneNumberError] = useState('')
+  const [isCountingDown, setIsCountingDown] = useState(false)
+  const [countdown, setCountdown] = useState(60)
 
-  // 事件处理函数
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    let timer
+    if (isCountingDown && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown(prevCountdown => prevCountdown - 1)
+      }, 1000)
+    } else if (countdown === 0) {
+      setIsCountingDown(false)
+      setCountdown(60) // Reset countdown
+    }
+    return () => clearInterval(timer)
+  }, [isCountingDown, countdown])
+
   const handlePhoneNumberChange = (event) => {
-    setPhoneNumber(event.target.value)
-  }
+    const value = event.target.value
+    setPhoneNumber(value)
 
+    // 验证手机号
+    const phonePattern = /^1[3-9]\d{9}$/
+    if (phonePattern.test(value)) {
+      setPhoneNumberError('')
+    } else {
+      setPhoneNumberError('请输入正确的手机号！')
+    }
+  }
   const handleVerificationCodeChange = (event) => {
     setVerificationCode(event.target.value)
   }
@@ -26,7 +52,21 @@ const Amend = () => {
   }
 
   const handleRegister = () => {
-    // 处理注册逻辑
+    if (phoneNumberError === '' && password === confirmPassword) {
+      navigate('/')
+    } else {
+      if (phoneNumberError !== '') {
+        alert(phoneNumberError)
+      } else if (password !== confirmPassword) {
+        alert('密码和确认密码不匹配！')
+      }
+    }
+  }
+
+  const handleGetVerificationCode = () => {
+    if (!isCountingDown) {
+      setIsCountingDown(true)
+    }
   }
 
   return (
@@ -36,7 +76,7 @@ const Amend = () => {
           <div className='amend-main'>
             <div className='amend-title'>
               修改密码
-            </div >
+            </div>
             {/* 输入手机号 */}
             <div className='phone'>
               <input
@@ -44,7 +84,10 @@ const Amend = () => {
                 placeholder='注册手机号'
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
+                pattern='^1[3-9]\d{9}$'
+                title='请输入正确的手机号！'
               />
+              {phoneNumberError && <div className='error-message'>{phoneNumberError}</div>}
             </div>
 
             {/* 输入验证码 */}
@@ -56,8 +99,9 @@ const Amend = () => {
                 onChange={handleVerificationCodeChange}
               />
               {/* 获取验证码 */}
-              <button>获取验证码</button>
-
+              <button onClick={handleGetVerificationCode} disabled={isCountingDown}>
+                {isCountingDown ? `重新获取(${countdown}s)` : '获取验证码'}
+              </button>
             </div>
             <div className='password-section'>
               {/* 输入新密码 */}
@@ -80,8 +124,6 @@ const Amend = () => {
                 />
               </div>
 
-
-
               {/* 完成注册按钮 */}
               <div className='complete'>
                 <button onClick={handleRegister}>确定</button>
@@ -97,7 +139,3 @@ const Amend = () => {
 }
 
 export default Amend
-
-
-
-

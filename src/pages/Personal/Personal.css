@@ -9,7 +9,7 @@
 
 .personal-main {
   min-height: 100vh;
-  width: 70%;
+  width: 72%;
   margin-top: 40px;
   display: flex;
   justify-content: center;
@@ -27,6 +27,7 @@
 
 .personallist {
   list-style: none;
+  width:max-content
 }
 
 .personallist li:hover {
@@ -43,11 +44,14 @@
 .personallist li {
   color: #6f6b6b;
   letter-spacing: 5px;
-  font-size: 25px;
+  font-size: 23px;
   margin-bottom: 5px;
   padding: 10px !important;
 }
 
+.personal img{
+  padding-right: 2px;
+}
 .item-name {
   margin-left: 10%; /* 设置名称和图片之间的左侧间距 */
 }
